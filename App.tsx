@@ -7,10 +7,11 @@
  * 
  * @format
  */
-
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
-import SQLite from 'react-native-sqlite-storage';
+import 'reflect-metadata';
+import { createConnection } from "typeorm";
+import React, { Component } from 'react';
+import { Platform, StyleSheet, Text, View } from 'react-native';
+import { User } from './src/entities/User';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -19,21 +20,49 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
-interface Props {}
-export default class App extends Component<Props> {
+
+export default class App extends Component<any, any> {
+  connect() {
+    return createConnection({
+      type: 'react-native',
+      database: 'test',
+      location: 'default',
+      logging: ['error', 'query', 'schema'],
+      synchronize: true,
+      entities: [
+          User
+      ]
+    });
+  }
+
   errorCB(err: any) {
     console.warn("SQL Error: " + err);
   }
-  
+
   successCB() {
     console.warn("SQL executed fine");
   }
 
-  componentDidMount(){
-    SQLite.openDatabase({name: 'my.db', location: 'Library'}, this.successCB, this.errorCB);
+  async componentDidMount() {
+    // SQLite.openDatabase({name: 'my.db', location: 'Library'}, this.successCB, this.errorCB);
+    await this.connect();
+    const user = new User();
+    user.firstName = "Timber";
+    user.lastName = "Saw";
+    user.age = 25;
+    await user.save();
+
+    const allUsers = await User.find();
+    console.warn('allUsers', allUsers);
+    const firstUser = await User.findOne(1);
+    const timber = await User.findOne({ firstName: "Timber", lastName: "Saw" });
+
+    if (timber) {
+      await timber.remove();
+    }
   }
 
-  
+
   render() {
     return (
       <View style={styles.container}>
