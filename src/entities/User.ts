@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany } from "typeorm";
+import { Car } from "./Car";
 @Entity()
 export class User extends BaseEntity {
 
@@ -13,5 +14,8 @@ export class User extends BaseEntity {
 
     @Column('int', {nullable:true})
     age: number;
+
+    @OneToMany(type => Car, car => car.user)
+    cars: Car[];
 
 }
