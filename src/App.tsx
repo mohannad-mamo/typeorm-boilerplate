@@ -2,8 +2,8 @@ import 'reflect-metadata';
 import { createConnection } from "typeorm";
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
-import { User } from './src/entities/User';
-import { Car } from './src/entities/Car';
+import { User } from './entities/User';
+import { Car } from './entities/Car';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -22,8 +22,7 @@ export default class App extends Component<any, any> {
       logging: ['error', 'query', 'schema'],
       synchronize: true,
       entities: [
-        User,
-        Car
+        User, Car
       ]
     });
   }
