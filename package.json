@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "react": "16.8.3",
-    "react-native": "0.59.1",
+    "react-native": "0.62.3",
     "react-native-sqlite-storage": "^3.3.10",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.15"
